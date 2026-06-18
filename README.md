@@ -387,9 +387,62 @@ bank-loan-propensity-mlops/
 
 ---
 
-## Source Code Pipeline
+## How to Run Locally
 
-Run these commands from the project root after placing `Data1.csv` and `Data2.csv` inside `data/raw/`.
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/bank-loan-propensity-mlops.git
+cd bank-loan-propensity-mlops
+```
+
+---
+
+### 2. Create and activate environment
+
+```bash
+python -m venv .venv
+```
+
+**Windows PowerShell:**
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+**macOS/Linux:**
+
+```bash
+source .venv/bin/activate
+```
+
+---
+
+### 3. Install dependencies
+
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+---
+
+### 4. Add the raw data locally
+
+Place the raw datasets at:
+
+```text
+data/raw/Data1.csv
+data/raw/Data2.csv
+```
+
+Raw data is intentionally excluded from GitHub to keep the repository clean and avoid sharing source data publicly.
+
+---
+
+### 5. Run the full source-code pipeline
+
+Run these commands from the project root:
 
 ```bash
 python -m src.data_preprocessing
@@ -398,41 +451,57 @@ python -m src.train_model
 python -m src.predict
 ```
 
----
+The pipeline will:
 
-## Notebook Workflow
-
-| Notebook | Purpose |
-|---|---|
-| `01_data_understanding.ipynb` | Business problem, data dictionary, target definition, and banking context |
-| `02_eda_statistical_analysis.ipynb` | Exploratory analysis, class distribution, statistical relationships, and feature behavior |
-| `03_feature_engineering.ipynb` | Modeling dataset preparation, transformations, train-test split, and feature set design |
-| `04_model_training_evaluation.ipynb` | Baseline models, resampling experiments, tuning, evaluation, and error analysis |
-| `05_model_selection.ipynb` | Final model decision, business trade-off, and production recommendation |
-
----
-
-### Pipeline Responsibilities
-
-| File | Responsibility |
-|---|---|
-| `src/data_preprocessing.py` | Load raw files, validate columns, merge data, clean target, and save processed dataset |
-| `src/feature_engineering.py` | Drop leakage/non-modeling columns, prepare model features, apply transformations, and create train-test split |
-| `src/train_model.py` | Train baseline models, tune Hist Gradient Boosting, evaluate final model, and save artifacts |
-| `src/evaluate_model.py` | Calculate classification metrics, confusion matrix, and FP/FN business error counts |
-| `src/predict.py` | Load saved artifacts, validate customer input, and return propensity predictions |
+```text
+Load raw customer datasets
+        ↓
+Merge and validate customer records
+        ↓
+Clean the target and modeling features
+        ↓
+Create train-test datasets
+        ↓
+Train and evaluate the final model
+        ↓
+Save model artifacts
+        ↓
+Run a sample prediction
+```
 
 ---
 
-## Flask API Usage
+### 6. Run notebooks in order
 
-Start the API locally:
+Open and run the notebooks from `01` to `05`:
+
+```text
+notebooks/01_data_understanding.ipynb
+notebooks/02_eda_statistical_analysis.ipynb
+notebooks/03_feature_engineering.ipynb
+notebooks/04_model_training_evaluation.ipynb
+notebooks/05_model_selection.ipynb
+```
+
+The notebooks explain both the technical implementation and the business reasoning behind each modeling decision.
+
+---
+
+### 7. Run the Flask API locally
+
+After training the model, start the API:
 
 ```bash
 python flask_app/app.py
 ```
 
-Send a prediction request:
+The API will run at:
+
+```text
+http://localhost:5000
+```
+
+Send a sample prediction request:
 
 ```bash
 curl -X POST http://localhost:5000/predict \
@@ -440,7 +509,7 @@ curl -X POST http://localhost:5000/predict \
   -d @flask_app/sample_request.json
 ```
 
-### Example Request
+#### Example Request
 
 ```json
 {
@@ -457,8 +526,7 @@ curl -X POST http://localhost:5000/predict \
   "CreditCard": 1
 }
 ```
-
-### Example Response
+#### Example response:
 
 ```json
 {
@@ -468,9 +536,10 @@ curl -X POST http://localhost:5000/predict \
   "loan_acceptance_probability": 0.94
 }
 ```
+
 ---
 
-## Docker Deployment
+### 8. Run with Docker
 
 Build the Docker image:
 
@@ -486,9 +555,9 @@ docker run -p 5000:5000 bank-loan-propensity-api:latest
 
 ---
 
-## Kubernetes Deployment
+### 9. Deploy with Kubernetes
 
-Update the image name in `kubernetes/deployment.yaml`, then apply the manifests:
+Update the image name in `kubernetes/deployment.yaml`, then run:
 
 ```bash
 kubectl apply -f kubernetes/deployment.yaml
@@ -499,9 +568,7 @@ kubectl get svc
 
 ---
 
-## Terraform AWS Deployment
-
-The Terraform templates create an ECR repository and an EKS cluster using the AWS provider and the community EKS module.
+### 10. Provision AWS infrastructure with Terraform
 
 ```bash
 cd terraform
@@ -510,7 +577,11 @@ terraform plan
 terraform apply
 ```
 
-> Note: Running Terraform on AWS can create billable resources. Review variables and AWS permissions before applying.
+> Note: Terraform may create billable AWS resources. Review the configuration and destroy unused resources after testing.
+
+```bash
+terraform destroy
+```
 
 ---
 
