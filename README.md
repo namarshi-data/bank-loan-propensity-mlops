@@ -29,18 +29,17 @@ After evaluating more than 20 model variations, a tuned Hist Gradient Boosting m
 
 ## Business Problem
 
-Retail banks often run loan marketing campaigns across a broad customer base, which can lead to low conversion rates, unnecessary marketing costs, and poor customer targeting.
+### Objective
 
-The business objective of this project is to predict which customers are most likely to accept a loan offer so that marketing teams can focus outreach on the highest-propensity customers.
+Identify customers with the highest probability of accepting a loan offer so the bank can improve campaign targeting, reduce unnecessary outreach, and increase marketing return on investment.
 
-This type of solution can help financial institutions:
+### Business Value
 
-- Improve campaign targeting
-- Increase loan adoption rates
-- Reduce customer acquisition costs
-- Improve marketing efficiency
+- Improve loan campaign conversion rates
+- Reduce customer acquisition cost
+- Reduce unnecessary marketing spend
 - Support data-driven customer segmentation
-- Enable scalable customer scoring through an API-based deployment
+- Enable scalable prediction through an API-based deployment pattern
 
 ---
 
@@ -109,6 +108,46 @@ From a banking business perspective, this model is useful when the goal is to ba
 
 ---
 
+## Key Business Insights
+
+Feature importance analysis showed that the strongest drivers of loan adoption were related to customer spending behaviour, customer value level, internal scoring, and existing banking relationships.
+
+| Rank | Feature             |
+| ---: | ------------------- |
+|    1 | HighestSpend        |
+|    2 | Level               |
+|    3 | HiddenScore         |
+|    4 | MonthlyAverageSpend |
+|    5 | FixedDepositAccount |
+
+Customers were more likely to accept loan offers when they:
+
+- Had higher individual transaction values
+- Maintained higher monthly average spending
+- Belonged to higher-value customer segments
+- Had stronger internal customer scores
+- Held fixed deposit accounts with the bank
+
+These insights can help marketing and product teams design more targeted loan campaigns.
+
+---
+
+## Target Roles This Project Supports
+
+This project was structured to reflect skills commonly requested in Canadian banking and finance analytics roles:
+
+| Target role | Project evidence |
+|---|---|
+| Python analytics | End-to-end notebooks and reusable `src/` pipeline |
+| Statistical analysis | EDA, distribution review, categorical analysis, and model interpretation |
+| Credit / banking context | Customer-level loan propensity and campaign targeting use case |
+| Machine learning | Multiple classification models, tuning, and model selection |
+| Model evaluation | Precision, recall, F1, ROC-AUC, confusion matrix, false-positive/false-negative analysis |
+| MLOps readiness | Flask API, Dockerfile, Kubernetes manifests, Terraform templates, CI workflow |
+| Business communication | README explains model results in banking and campaign terms |
+
+---
+
 ## Machine Learning Workflow
 
 ```text
@@ -161,7 +200,7 @@ Flask Prediction API
 Customer Propensity Score
 ```
 
-Infrastructure provisioning is automated using Terraform, while deployment is managed through AWS CodePipeline and CodeBuild.
+Infrastructure templates are included in `terraform/`, and Kubernetes deployment manifests are included in `kubernetes/`.
 
 ---
 
@@ -201,30 +240,6 @@ Marketing Campaign System
 | Target Variable   | LoanOnCard                 |
 | Problem Type      | Binary Classification      |
 | Business Use Case | Loan Propensity Prediction |
-
----
-
-## Key Business Insights
-
-Feature importance analysis showed that the strongest drivers of loan adoption were related to customer spending behaviour, customer value level, internal scoring, and existing banking relationships.
-
-| Rank | Feature             |
-| ---: | ------------------- |
-|    1 | HighestSpend        |
-|    2 | Level               |
-|    3 | HiddenScore         |
-|    4 | MonthlyAverageSpend |
-|    5 | FixedDepositAccount |
-
-Customers were more likely to accept loan offers when they:
-
-- Had higher individual transaction values
-- Maintained higher monthly average spending
-- Belonged to higher-value customer segments
-- Had stronger internal customer scores
-- Held fixed deposit accounts with the bank
-
-These insights can help marketing and product teams design more targeted loan campaigns.
 
 ---
 
@@ -280,79 +295,6 @@ Key validation considerations included:
 - Production-readiness through API deployment and containerization
 
 In a real banking environment, this model would require additional validation before production use, including fairness testing, data drift monitoring, model-performance monitoring, approval workflows, and periodic retraining.
-
----
-
-## Technology Stack
-
-### Data Science and Machine Learning
-
-- Python
-- Pandas
-- NumPy
-- Scikit-Learn
-- Imbalanced-Learn
-- SciPy
-- Matplotlib
-- Seaborn
-- 
-### Application Development
-
-- Flask
-- REST API
-- Model serialization
-- API testing
-- 
-### Cloud and MLOps
-
-- AWS
-- Amazon EKS
-- Amazon ECR
-- AWS CodePipeline
-- AWS CodeBuild
-- Docker
-- Kubernetes
-- Terraform
-- CI/CD
-
----
-
-## Skills Demonstrated
-
-### Data Science
-
-- Business problem framing
-- Data cleaning
-- Exploratory data analysis
-- Statistical analysis
-- Feature engineering
-- Classification modeling
-- Class imbalance handling
-- Hyperparameter tuning
-- Model evaluation
-- Feature importance analysis
-- Business metric interpretation
-
-### Banking and Analytics
-
-- Loan propensity modeling
-- Customer targeting
-- Campaign optimization
-- Marketing cost reduction
-- Precision-recall trade-off analysis
-- Customer segmentation support
-- Banking product analytics
-
-### MLOps and Deployment
-
-- Flask API development
-- Docker containerization
-- Kubernetes deployment
-- Amazon EKS deployment
-- Amazon ECR image registry
-- Terraform infrastructure provisioning
-- CI/CD pipeline design
-- Cloud-native ML deployment
 
 ---
 
@@ -445,9 +387,58 @@ bank-loan-propensity-mlops/
 
 ---
 
-## API Usage Example
+## Source Code Pipeline
 
-The deployed Flask API accepts customer-level input features and returns a loan propensity prediction.
+Run these commands from the project root after placing `Data1.csv` and `Data2.csv` inside `data/raw/`.
+
+```bash
+python -m src.data_preprocessing
+python -m src.feature_engineering
+python -m src.train_model
+python -m src.predict
+```
+
+---
+
+## Notebook Workflow
+
+| Notebook | Purpose |
+|---|---|
+| `01_data_understanding.ipynb` | Business problem, data dictionary, target definition, and banking context |
+| `02_eda_statistical_analysis.ipynb` | Exploratory analysis, class distribution, statistical relationships, and feature behavior |
+| `03_feature_engineering.ipynb` | Modeling dataset preparation, transformations, train-test split, and feature set design |
+| `04_model_training_evaluation.ipynb` | Baseline models, resampling experiments, tuning, evaluation, and error analysis |
+| `05_model_selection.ipynb` | Final model decision, business trade-off, and production recommendation |
+
+---
+
+### Pipeline Responsibilities
+
+| File | Responsibility |
+|---|---|
+| `src/data_preprocessing.py` | Load raw files, validate columns, merge data, clean target, and save processed dataset |
+| `src/feature_engineering.py` | Drop leakage/non-modeling columns, prepare model features, apply transformations, and create train-test split |
+| `src/train_model.py` | Train baseline models, tune Hist Gradient Boosting, evaluate final model, and save artifacts |
+| `src/evaluate_model.py` | Calculate classification metrics, confusion matrix, and FP/FN business error counts |
+| `src/predict.py` | Load saved artifacts, validate customer input, and return propensity predictions |
+
+---
+
+## Flask API Usage
+
+Start the API locally:
+
+```bash
+python flask_app/app.py
+```
+
+Send a prediction request:
+
+```bash
+curl -X POST http://localhost:5000/predict \
+  -H "Content-Type: application/json" \
+  -d @flask_app/sample_request.json
+```
 
 ### Example Request
 
@@ -471,11 +462,55 @@ The deployed Flask API accepts customer-level input features and returns a loan 
 
 ```json
 {
+  "success": true,
   "prediction": 1,
   "propensity_label": "High Propensity",
   "loan_acceptance_probability": 0.94
 }
 ```
+---
+
+## Docker Deployment
+
+Build the Docker image:
+
+```bash
+docker build -f docker/Dockerfile -t bank-loan-propensity-api:latest .
+```
+
+Run the container:
+
+```bash
+docker run -p 5000:5000 bank-loan-propensity-api:latest
+```
+
+---
+
+## Kubernetes Deployment
+
+Update the image name in `kubernetes/deployment.yaml`, then apply the manifests:
+
+```bash
+kubectl apply -f kubernetes/deployment.yaml
+kubectl apply -f kubernetes/service.yaml
+kubectl get pods
+kubectl get svc
+```
+
+---
+
+## Terraform AWS Deployment
+
+The Terraform templates create an ECR repository and an EKS cluster using the AWS provider and the community EKS module.
+
+```bash
+cd terraform
+terraform init
+terraform plan
+terraform apply
+```
+
+> Note: Running Terraform on AWS can create billable resources. Review variables and AWS permissions before applying.
 
 ---
 
@@ -490,6 +525,79 @@ A typical workflow would be:
 3. Select high-propensity customers for outreach
 4. Monitor campaign conversion rates
 5. Retrain or recalibrate the model as customer behaviour changes
+
+---
+
+## Technology Stack
+
+### Data Science and Machine Learning
+
+- Python
+- Pandas
+- NumPy
+- Scikit-Learn
+- Imbalanced-Learn
+- SciPy
+- Matplotlib
+- Seaborn
+- 
+### Application Development
+
+- Flask
+- REST API
+- Model serialization
+- API testing
+- 
+### Cloud and MLOps
+
+- AWS
+- Amazon EKS
+- Amazon ECR
+- AWS CodePipeline
+- AWS CodeBuild
+- Docker
+- Kubernetes
+- Terraform
+- CI/CD
+
+---
+
+## Skills Demonstrated
+
+### Data Science
+
+- Business problem framing
+- Data cleaning
+- Exploratory data analysis
+- Statistical analysis
+- Feature engineering
+- Classification modeling
+- Class imbalance handling
+- Hyperparameter tuning
+- Model evaluation
+- Feature importance analysis
+- Business metric interpretation
+
+### Banking and Analytics
+
+- Loan propensity modeling
+- Customer targeting
+- Campaign optimization
+- Marketing cost reduction
+- Precision-recall trade-off analysis
+- Customer segmentation support
+- Banking product analytics
+
+### MLOps and Deployment
+
+- Flask API development
+- Docker containerization
+- Kubernetes deployment
+- Amazon EKS deployment
+- Amazon ECR image registry
+- Terraform infrastructure provisioning
+- CI/CD pipeline design
+- Cloud-native ML deployment
 
 ---
 
