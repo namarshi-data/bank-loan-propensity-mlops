@@ -1,8 +1,8 @@
-# Canadian Bank Loan Propensity Prediction & MLOps Deployment
+# Bank Loan Propensity Prediction & MLOps Deployment
 
 I built this project to predict high-propensity banking customers for personal loan marketing and to package the solution in a deployment-ready MLOps structure.
 
-The project is designed as a finance and data science portfolio project for Canadian banking, analytics, and machine learning roles. It demonstrates data cleaning, exploratory analysis, statistical review, feature engineering, classification modelling, business-focused model evaluation, Flask API development, Docker packaging, Kubernetes manifests, Terraform templates, unit testing, and GitHub Actions CI validation.
+The project is designed as a finance and data science portfolio project for banking, analytics, and machine learning roles. It demonstrates data cleaning, exploratory analysis, statistical review, feature engineering, classification modelling, business-focused model evaluation, Flask API development, Docker packaging, Kubernetes manifests, Terraform templates, unit testing, and GitHub Actions CI validation.
 
 > **Deployment status:** This repository is deployment-ready. It includes Docker, Kubernetes, Terraform, and CI templates. It does not claim a live AWS deployment unless real deployment evidence is added later.
 
