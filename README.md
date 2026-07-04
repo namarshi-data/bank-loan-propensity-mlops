@@ -1,10 +1,6 @@
 # Banking Loan Propensity Analytics & MLOps Deployment
 
-End-to-end banking analytics project predicting which customers are most likely to accept a personal loan offer. The project combines data cleaning, exploratory analysis, feature engineering, classification modelling, threshold tuning, business-focused error analysis, Flask API development, Docker packaging, CI validation, and MLOps-ready deployment templates.
-
-> **Deployment status:** This repository is deployment-ready for local/containerized execution. It includes Docker, Kubernetes, Terraform, and GitHub Actions CI templates. It does not claim a live AWS or Kubernetes deployment unless real deployment evidence is added.
-
----
+End-to-end banking analytics project using machine learning to identify high-propensity personal loan customers, explain model results, and package the solution with API and MLOps-ready deployment templates.
 
 ## Recruiter Summary
 
@@ -38,7 +34,7 @@ This project answers:
 
 ---
 
-## Executive Summary
+## Key Results
 
 The final champion model is a Gradient Boosting classifier with a tuned classification threshold. It was selected because it provided the strongest balance between identifying likely loan customers and controlling unnecessary campaign outreach.
 
@@ -50,6 +46,8 @@ The final champion model is a Gradient Boosting classifier with a tuned classifi
 | F1 Score        | 96.41% |
 | False Positives |      5 |
 | False Negatives |      2 |
+
+> **Model risk note:** The high ROC-AUC reflects this portfolio dataset and holdout split. Before any real banking use, the model would require leakage review, out-of-time validation, fairness testing, drift monitoring, privacy review, and model-risk approval.
 
 ### Business Interpretation
 
@@ -106,264 +104,7 @@ CI validation with GitHub Actions
 
 ---
 
-## Repository Structure
-
-```text
-canadian-bank-loan-propensity-mlops-deployment/
-│
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-│
-├── data/
-│   ├── raw/
-│   │   └── .gitkeep
-│   ├── processed/
-│   │   └── .gitkeep
-│   └── README.md
-│
-├── notebooks/
-│   ├── 01_data_understanding.ipynb
-│   ├── 02_data_cleaning_preprocessing.ipynb
-│   ├── 03_eda_statistical_analysis.ipynb
-│   ├── 04_feature_engineering.ipynb
-│   ├── 05_model_training_evaluation.ipynb
-│   └── 06_model_selection_governance.ipynb
-│
-├── src/
-│   ├── __init__.py
-│   ├── config.py
-│   ├── data_preprocessing.py
-│   ├── feature_engineering.py
-│   ├── evaluate_model.py
-│   ├── train_model.py
-│   ├── predict.py
-│   └── utils.py
-│
-├── flask_app/
-│   ├── app.py
-│   ├── sample_request.json
-│   ├── test_api.py
-│   ├── requirements.txt
-│   └── model/
-│       └── .gitkeep
-│
-├── scripts/
-│   └── run_pipeline.py
-│
-├── tests/
-│   ├── test_preprocessing.py
-│   └── test_prediction_contract.py
-│
-├── docker/
-│   └── Dockerfile
-│
-├── kubernetes/
-│   ├── deployment.yaml
-│   └── service.yaml
-│
-├── terraform/
-│   ├── main.tf
-│   ├── variables.tf
-│   └── outputs.tf
-│
-├── docs/
-│   ├── deployment_evidence_checklist.md
-│   ├── model_card.md
-│   ├── model_results_summary.md
-│   └── recruiter_review_notes.md
-│
-├── screenshots/
-│   ├── architecture.png
-│   ├── project_workflow.png
-│   ├── model_comparison.png
-│   └── feature_importance.png
-│
-├── requirements.txt
-├── pyproject.toml
-├── README.md
-└── .gitignore
-```
-
----
-
-## Notebook Guide
-
-| Notebook                               | Purpose                                                                                                            |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `01_data_understanding.ipynb`          | Understand the raw files, schema, customer-level records, target variable, and business use case                   |
-| `02_data_cleaning_preprocessing.ipynb` | Merge raw files, validate data quality, handle missing targets, correct inconsistent values, and save cleaned data |
-| `03_eda_statistical_analysis.ipynb`    | Analyze target imbalance, feature distributions, customer behaviour, and loan propensity patterns                  |
-| `04_feature_engineering.ipynb`         | Create modelling-ready features, avoid identifier leakage, and generate train-test datasets                        |
-| `05_model_training_evaluation.ipynb`   | Train candidate models and compare precision, recall, F1, ROC-AUC, false positives, and false negatives            |
-| `06_model_selection_governance.ipynb`  | Select the champion model, tune the classification threshold, and document governance considerations               |
-
----
-
-## Source Code Pipeline
-
-The notebooks explain the analytical reasoning. The `src/` package contains reusable production-style Python code so the project can be run as a repeatable pipeline.
-
-Run the full pipeline:
-
-```bash
-python scripts/run_pipeline.py
-```
-
-Or run each step separately:
-
-```bash
-python -m src.data_preprocessing
-python -m src.feature_engineering
-python -m src.train_model
-python -m src.predict
-```
-
-The source pipeline performs:
-
-```text
-raw data loading
-        ↓
-customer-level merge
-        ↓
-data cleaning and validation
-        ↓
-feature preparation
-        ↓
-train-test split
-        ↓
-model training
-        ↓
-model evaluation
-        ↓
-model artifact export
-```
-
----
-
-## Dataset Overview
-
-| Item                          |                               Value |
-| ----------------------------- | ----------------------------------: |
-| Initial records               |                               5,000 |
-| Final cleaned records         |                               4,980 |
-| Holdout actual loan customers |                                  96 |
-| Target variable               |                        `LoanOnCard` |
-| Problem type                  |               Binary classification |
-| Business use case             | Personal loan propensity prediction |
-
-Raw data is intentionally excluded from GitHub. Place the raw files locally under `data/raw/`.
-
----
-
-## Final Champion Model
-
-The champion model is a Gradient Boosting classifier with a tuned classification threshold of **0.49**.
-
-| Metric           | Result |
-| ---------------- | -----: |
-| ROC-AUC          | 99.91% |
-| Precision        | 94.95% |
-| Recall           | 97.92% |
-| F1 Score         | 96.41% |
-| False Positives  |      5 |
-| False Negatives  |      2 |
-| True Positives   |     94 |
-| Actual Positives |     96 |
-
-### Why This Model Was Selected
-
-The selected model provides a strong business balance:
-
-* High recall means most actual loan customers are captured.
-* Strong precision means the campaign is not overloaded with too many low-propensity customers.
-* Low false negatives reduce missed revenue opportunity.
-* Low false positives help control unnecessary campaign cost.
-
----
-
-## Business Interpretation of Errors
-
-| Error Type     | Meaning in This Project                                             | Business Impact               |
-| -------------- | ------------------------------------------------------------------- | ----------------------------- |
-| False Positive | Customer predicted as high-propensity but did not accept the loan   | Extra campaign outreach cost  |
-| False Negative | Customer predicted as low-propensity but actually accepted the loan | Missed conversion opportunity |
-
-The champion model produced **5 false positives** and **2 false negatives** on the holdout set. For a marketing use case, this is a strong trade-off because missing likely customers is usually more costly than contacting a small number of additional customers.
-
----
-
-## Feature Importance
-
-The strongest model drivers were related to customer value, transaction behaviour, internal scoring, and existing banking relationships.
-
-| Rank | Feature             |
-| ---: | ------------------- |
-|    1 | HighestSpend        |
-|    2 | Level               |
-|    3 | HiddenScore         |
-|    4 | MonthlyAverageSpend |
-|    5 | FixedDepositAccount |
-
-Customers were more likely to accept loan offers when they had higher transaction values, stronger customer scores, higher banking relationship levels, higher spending behaviour, and existing fixed deposit relationships.
-
-![Feature Importance](screenshots/feature_importance.png)
-
----
-
-## Model Comparison
-
-The model development process compared multiple baseline and candidate models, including:
-
-* Dummy Classifier
-* Logistic Regression
-* Weighted Logistic Regression
-* Naive Bayes
-* Support Vector Machine
-* Decision Tree
-* Random Forest
-* Gradient Boosting
-* Resampling-based experiments
-
-The final champion was selected using both technical metrics and business interpretation.
-
-![Model Comparison](screenshots/model_comparison.png)
-
----
-
-## Model Validation and Governance Notes
-
-Because this is a banking analytics use case, the model was evaluated beyond accuracy alone.
-
-Validation considerations included:
-
-* Precision, recall, F1, and ROC-AUC
-* Confusion matrix review
-* False positive and false negative business impact
-* Class imbalance awareness
-* Threshold tuning
-* Feature importance interpretation
-* Reproducible train-test workflow
-* API prediction contract validation
-
-### Important Model Risk Note
-
-This is a portfolio project. It demonstrates professional project structure and deployment readiness, but it should not be used as-is for real customer decisioning.
-
-Before real banking production use, the model would require:
-
-* Fairness and bias testing
-* Privacy and consent review
-* Out-of-time validation
-* Model drift monitoring
-* Data quality monitoring
-* Approval from model risk and governance stakeholders
-* Periodic recalibration or retraining
-* Business owner sign-off
-
----
-
-## Screenshots
+## Visual Outputs
 
 ### Project Workflow
 
@@ -381,7 +122,24 @@ Before real banking production use, the model would require:
 
 ![Feature Importance](screenshots/feature_importance.png)
 
-> Deployment screenshots should be added only after real execution. Do not include fake AWS, Kubernetes, Docker, or CI/CD screenshots.
+---
+
+## Model Deployment Summary
+
+The trained Gradient Boosting model is packaged for repeatable customer-level scoring through a lightweight Flask API. The deployment layer is designed to show how the model could be used by a banking analytics or marketing team to score new customer records and return a loan-propensity prediction.
+
+The deployment setup includes:
+
+| Component | Purpose |
+|---|---|
+| Flask API | Serves the trained model through a `/predict` endpoint |
+| Sample request file | Provides an example customer-scoring payload |
+| Dockerfile | Packages the API and dependencies into a container |
+| Kubernetes manifests | Provides deployment and service templates for container orchestration |
+| Terraform template | Provides an AWS ECR repository template for container image publishing |
+| GitHub Actions CI | Validates Python files, runs tests, and checks Docker build readiness |
+
+This repository is **structured for local and containerized deployment readiness**. It includes infrastructure templates for Docker, Kubernetes, Terraform, and CI validation, but it does **not** claim a live AWS, EKS, or Kubernetes production deployment.
 
 ---
 
@@ -408,7 +166,7 @@ source .venv/bin/activate
 ### 2. Install dependencies
 
 ```bash
-python.exe -m pip install --upgrade pip
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
@@ -429,38 +187,13 @@ Raw data is intentionally excluded from GitHub.
 python scripts/run_pipeline.py
 ```
 
-This performs:
-
-```text
-data cleaning and preprocessing
-feature engineering
-train-test split
-model training
-model evaluation
-artifact export
-```
-
-### 5. Run notebooks
-
-Open and run the notebooks from `01` to `06` in order.
-
----
-
-## Run the Flask API
-
-Train the model first:
-
-```bash
-python scripts/run_pipeline.py
-```
-
-Start the API:
+### 5. Run the Flask API
 
 ```bash
 python flask_app/app.py
 ```
 
-Send a prediction request:
+Send a test prediction request:
 
 ```bash
 curl -X POST http://localhost:5000/predict \
@@ -468,153 +201,39 @@ curl -X POST http://localhost:5000/predict \
   -d @flask_app/sample_request.json
 ```
 
-Example response:
-
-```json
-{
-  "success": true,
-  "result": {
-    "prediction": 1,
-    "loan_acceptance_probability": 0.94,
-    "propensity_label": "High Propensity",
-    "classification_threshold": 0.49
-  }
-}
-```
-
----
-
-## Docker
-
-Build and run the API container locally:
+### 6. Optional: Run with Docker
 
 ```bash
 docker build -f docker/Dockerfile -t bank-loan-propensity-api:latest .
 docker run -p 5000:5000 bank-loan-propensity-api:latest
 ```
 
----
-
-## Kubernetes
-
-Update the image name in `kubernetes/deployment.yaml`, then run:
-
-```bash
-kubectl apply -f kubernetes/deployment.yaml
-kubectl apply -f kubernetes/service.yaml
-kubectl get pods
-kubectl get svc
-```
-
-These manifests are included as deployment templates. Add Kubernetes evidence only after running the service in a real cluster.
+Detailed Kubernetes, Terraform, and CI instructions are available in `docs/deployment_guide.md`.
 
 ---
 
-## Terraform
+## Detailed Documentation
 
-The Terraform folder includes an Amazon ECR repository template for container image publishing.
+Additional technical documentation is available in the `docs/` folder:
 
-```bash
-cd terraform
-terraform init
-terraform plan
-terraform apply
-```
-
-AWS resources may create costs. Destroy resources after testing:
-
-```bash
-terraform destroy
-```
+- `docs/model_card.md`
+- `docs/model_results_summary.md`
+- `docs/deployment_guide.md`
+- `docs/recruiter_review_notes.md`
 
 ---
 
-## CI Validation
+## Tools & Skills Demonstrated
 
-The GitHub Actions workflow validates the project by:
-
-* Installing dependencies
-* Compiling Python files
-* Running unit tests
-* Building the Docker image
-
-Workflow file:
-
-```text
-.github/workflows/ci.yml
-```
-
----
-
-## Technology Stack
-
-### Data Science and Machine Learning
-
-* Python
-* Pandas
-* NumPy
-* Scikit-Learn
-* Imbalanced-Learn
-* SciPy
-* Matplotlib
-* Seaborn
-
-### Application and API Development
-
-* Flask
-* REST API
-* Joblib model serialization
-* API request/response contract testing
-
-### Engineering and MLOps Readiness
-
-* Modular Python source code
-* Single pipeline runner
-* Unit tests
-* Docker
-* Kubernetes manifests
-* Terraform templates
-* GitHub Actions CI
-* Clean artifact and data management
-
----
-
-## Skills Demonstrated
-
-### Data Science
-
-* Data cleaning and preprocessing
-* Exploratory data analysis
-* Statistical review
-* Feature engineering
-* Classification modelling
-* Class imbalance awareness
-* Threshold tuning
-* Precision, recall, F1, and ROC-AUC evaluation
-* Confusion matrix interpretation
-* Feature importance analysis
-* Champion model selection
-
-### Banking and Business Analytics
-
-* Personal loan propensity modelling
-* Customer targeting
-* Marketing campaign optimization
-* Sales prioritization
-* False positive and false negative cost interpretation
-* Business-focused model evaluation
-* Model governance awareness
-
-### Engineering and MLOps
-
-* Reusable Python modules
-* Repeatable pipeline execution
-* Flask API serving
-* Docker container template
-* Kubernetes deployment manifests
-* Terraform infrastructure template
-* GitHub Actions CI workflow
-* Unit testing and prediction contract validation
+| Area | Tools / Methods | Skills Demonstrated |
+|---|---|---|
+| Data analysis | Python, Pandas, NumPy, SciPy | Data cleaning, preprocessing, EDA, statistical review, feature analysis |
+| Machine learning | Scikit-Learn, Imbalanced-Learn, Gradient Boosting | Classification modelling, class imbalance handling, threshold tuning, model comparison |
+| Model evaluation | Precision, recall, F1, ROC-AUC, confusion matrix | Business-focused model evaluation, false positive / false negative interpretation |
+| Banking analytics | Loan propensity scoring, customer segmentation, campaign targeting | Marketing prioritization, customer-level analysis, campaign efficiency analysis |
+| Model governance | Leakage review, fairness considerations, drift monitoring notes | Responsible model use, risk awareness, production-readiness thinking |
+| API development | Flask, REST API, Joblib | Model serving, customer-level prediction endpoint, API contract testing |
+| MLOps readiness | Docker, Kubernetes templates, Terraform template, GitHub Actions CI | Containerization, deployment templates, automated validation, repeatable pipeline execution |
 
 ---
 
@@ -622,7 +241,7 @@ Workflow file:
 
 | Target Role | Why This Project Fits |
 |---|---|
-| Finance Data Analyst | Banking use case, customer-level analysis, business interpretation, campaign KPI thinking |
+| Financial Data Analyst | Banking use case, customer-level analysis, business interpretation, campaign KPI thinking |
 | Banking Analytics Analyst | Loan propensity modelling, segmentation, customer targeting, threshold strategy |
 | Data Analyst | Data cleaning, EDA, statistical analysis, visualization, business insights |
 | Machine Learning Analyst | Classification modelling, model comparison, threshold tuning, feature importance |
@@ -633,16 +252,11 @@ Workflow file:
 
 ## Future Enhancements
 
-* Add SQL-based data extraction or analytics layer
-* Add Power BI or Tableau dashboard for campaign monitoring
-* Add MLflow experiment tracking
-* Add model registry workflow
-* Add automated drift monitoring
-* Add fairness and bias testing
-* Add batch scoring for customer campaign files
-* Add scheduled retraining pipeline
-* Add real AWS ECR/EKS deployment evidence
-* Add A/B testing framework for loan campaign strategy
+- Add SQL-based data extraction and analytics layer
+- Add Power BI dashboard for campaign monitoring
+- Add MLflow experiment tracking and model registry workflow
+- Add fairness, bias, and drift monitoring
+- Add batch scoring for customer campaign files
 
 ---
 
@@ -652,14 +266,6 @@ This project is a portfolio demonstration. It shows a professional end-to-end ma
 
 The repository intentionally excludes raw data, processed datasets, model artifacts, cloud credentials, Terraform state files, and generated outputs from version control.
 
----
+The model is intended for campaign prioritization and analytical decision support, not automated credit approval, decline, or customer decisioning.
 
-## Conclusion
-
-This project demonstrates how machine learning can support a practical banking business problem: identifying customers who are most likely to accept a personal loan offer.
-
-The final Gradient Boosting champion model achieved **99.91% ROC-AUC**, **94.95% Precision**, **97.92% Recall**, and **96.41% F1 Score** on the holdout set. More importantly, the project connects model performance to campaign business decisions by explaining false positives, false negatives, recall, precision, and threshold selection.
-
-The project is structured to show both analytical and engineering readiness through clean notebooks, reusable source code, a single pipeline script, a Flask prediction API, unit tests, Docker packaging, Kubernetes manifests, Terraform templates, and GitHub Actions CI validation.
-
-It is designed as a professional portfolio project for Canadian banking analytics, finance data analyst, data scientist, machine learning analyst, and MLOps-oriented roles.
+It is designed as a professional portfolio project for Canadian banking analytics, financial data analyst, data scientist, machine learning analyst, and MLOps-oriented roles.
