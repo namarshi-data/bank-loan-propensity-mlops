@@ -1,4 +1,6 @@
-# Python
+# =========================
+# Python cache / test files
+# =========================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -6,7 +8,9 @@ __pycache__/
 .coverage
 htmlcov/
 
-# Environments
+# =========================
+# Virtual environments / secrets
+# =========================
 .venv/
 venv/
 env/
@@ -14,17 +18,62 @@ ENV/
 .env
 .env.*
 
+# =========================
 # Jupyter
+# =========================
 .ipynb_checkpoints/
 *.nbconvert.ipynb
 
-# Data and model artifacts
-data/raw/*.csv
-data/processed/*.csv
-flask_app/model/*.joblib
-*.joblib
+# =========================
+# Data files
+# =========================
+# Ignore all data files everywhere in the repo
+*.csv
+*.xlsx
+*.xls
+*.xlsm
+*.json
+*.parquet
+*.pq
+*.feather
+*.pkl
+*.pickle
+*.db
+*.sqlite
+*.sqlite3
 
-# Generated/temporary outputs
+# Ignore all data folders
+data/
+datasets/
+raw/
+processed/
+interim/
+exports/
+
+# But keep empty folder structure using .gitkeep
+!data/
+!data/raw/
+!data/processed/
+!data/interim/
+!data/exports/
+!data/**/.gitkeep
+
+# =========================
+# Model artifacts
+# =========================
+models/
+flask_app/model/
+*.joblib
+*.pkl
+*.pickle
+*.h5
+*.onnx
+*.pt
+*.pth
+
+# =========================
+# Generated / temporary outputs
+# =========================
 reports/
 outputs/
 artifacts/
@@ -32,13 +81,17 @@ tmp/
 temp/
 *.log
 
-# IDE/OS
+# =========================
+# IDE / OS
+# =========================
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
 
-# Terraform/AWS
+# =========================
+# Terraform / AWS / cloud secrets
+# =========================
 .terraform/
 *.tfstate
 *.tfstate.*
@@ -48,7 +101,9 @@ terraform.tfvars.json
 credentials
 config
 
-# Docker/Kubernetes
+# =========================
+# Docker / Kubernetes
+# =========================
 *.tar
 *.kubeconfig
 docker-compose.override.yml
