@@ -2,6 +2,15 @@
 
 End-to-end banking analytics project using machine learning to identify high-propensity personal loan customers, explain model results, and package the solution with API and MLOps-ready deployment templates.
 
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![Machine Learning](https://img.shields.io/badge/ML-Gradient%20Boosting%20%7C%20Scikit--Learn-green)
+![Banking Analytics](https://img.shields.io/badge/Banking-Loan%20Propensity%20Analytics-darkblue)
+![API](https://img.shields.io/badge/API-Flask-orange)
+![MLOps](https://img.shields.io/badge/MLOps-Docker%20%7C%20CI%20%7C%20Kubernetes-purple)
+![Governance](https://img.shields.io/badge/Governance-Model%20Risk%20%7C%20Monitoring-lightgrey)
+
+---
+
 ## Recruiter Summary
 
 This project demonstrates how predictive analytics can support personal loan campaign planning in a retail banking environment.
