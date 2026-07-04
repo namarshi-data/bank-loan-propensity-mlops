@@ -1,6 +1,6 @@
 # Banking Loan Propensity Analytics & MLOps Deployment
 
-End-to-end banking analytics project using machine learning to identify high-propensity personal loan customers, explain model results, and package the solution with API and MLOps-ready deployment templates.
+> End-to-end banking analytics project using machine learning to identify high-propensity personal loan customers, explain model results, and package the solution with API and MLOps-ready deployment templates.
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![Machine Learning](https://img.shields.io/badge/ML-Gradient%20Boosting%20%7C%20Scikit--Learn-green)
