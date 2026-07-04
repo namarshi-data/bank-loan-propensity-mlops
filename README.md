@@ -1,10 +1,27 @@
-# Bank Loan Propensity Prediction & MLOps Deployment
+# Banking Loan Propensity Analytics & MLOps Deployment
 
-I built this project to predict high-propensity banking customers for personal loan marketing and to package the solution in a deployment-ready MLOps structure.
+End-to-end banking analytics project predicting which customers are most likely to accept a personal loan offer. The project combines data cleaning, exploratory analysis, feature engineering, classification modelling, threshold tuning, business-focused error analysis, Flask API development, Docker packaging, CI validation, and MLOps-ready deployment templates.
 
-The project is designed as a finance and data science portfolio project for banking, analytics, and machine learning roles. It demonstrates data cleaning, exploratory analysis, statistical review, feature engineering, classification modelling, business-focused model evaluation, Flask API development, Docker packaging, Kubernetes manifests, Terraform templates, unit testing, and GitHub Actions CI validation.
+> **Deployment status:** This repository is deployment-ready for local/containerized execution. It includes Docker, Kubernetes, Terraform, and GitHub Actions CI templates. It does not claim a live AWS or Kubernetes deployment unless real deployment evidence is added.
 
-> **Deployment status:** This repository is deployment-ready. It includes Docker, Kubernetes, Terraform, and CI templates. It does not claim a live AWS deployment unless real deployment evidence is added later.
+---
+
+## Recruiter Summary
+
+This project demonstrates how predictive analytics can support personal loan campaign planning in a retail banking environment.
+
+| Area | Evidence |
+|---|---|
+| Business problem | Prioritize customers most likely to accept a personal loan offer |
+| Analytics task | Binary classification and customer propensity scoring |
+| Champion model | Gradient Boosting classifier |
+| Threshold strategy | Tuned threshold of 0.49 to balance recall and campaign efficiency |
+| Holdout result | 94 of 96 actual loan customers identified |
+| Business trade-off | 5 false positives and 2 false negatives |
+| Deployment readiness | Flask API, Docker, Kubernetes templates, Terraform template, CI workflow |
+| Governance awareness | Leakage review, fairness testing, drift monitoring, privacy review, and production sign-off noted |
+
+The project is designed for banking analytics, finance data analyst, machine learning analyst, and data science-adjacent roles where candidates are expected to connect modelling results to business decisions.
 
 ---
 
@@ -44,16 +61,18 @@ From a banking campaign perspective, this model supports targeted outreach by he
 
 ## Business Value
 
-This project demonstrates how a retail bank could use predictive analytics to support personal loan campaign planning.
+Retail banks often run personal loan campaigns across large customer bases. A broad campaign may waste marketing spend, overload sales teams, and create poor customer experience by contacting customers with low likelihood of conversion.
 
-Potential business benefits include:
+This model supports a more targeted campaign strategy by ranking customers based on estimated loan acceptance probability.
 
-* Better campaign targeting
-* Reduced unnecessary outreach
-* Improved sales team prioritization
-* Higher return on marketing investment
-* Customer-level propensity scoring
-* Repeatable scoring through an API-ready pipeline
+Potential business benefits:
+
+- Prioritize high-propensity customers for outreach
+- Reduce unnecessary customer contact
+- Improve sales team focus
+- Support campaign segmentation
+- Connect model metrics to campaign cost and missed opportunity
+- Provide repeatable API-based scoring for future campaign files
 
 ---
 
@@ -601,14 +620,14 @@ Workflow file:
 
 ## Target Roles This Project Supports
 
-| Target Role                   | Project Evidence                                                                      |
-| ----------------------------- | ------------------------------------------------------------------------------------- |
-| Data Analyst                  | Data cleaning, EDA, business insights, visualizations, reporting-style interpretation |
-| Finance Data Analyst          | Banking use case, customer targeting, campaign metric interpretation                  |
-| Data Scientist                | Classification modelling, model comparison, threshold tuning, feature importance      |
-| Machine Learning Analyst      | Reusable ML pipeline, model evaluation, prediction API, testing                       |
-| Banking Analytics Analyst     | Loan propensity modelling, customer segmentation, campaign optimization               |
-| MLOps / ML Deployment Analyst | Flask API, Docker, Kubernetes templates, Terraform template, CI workflow              |
+| Target Role | Why This Project Fits |
+|---|---|
+| Finance Data Analyst | Banking use case, customer-level analysis, business interpretation, campaign KPI thinking |
+| Banking Analytics Analyst | Loan propensity modelling, segmentation, customer targeting, threshold strategy |
+| Data Analyst | Data cleaning, EDA, statistical analysis, visualization, business insights |
+| Machine Learning Analyst | Classification modelling, model comparison, threshold tuning, feature importance |
+| Junior Data Scientist | End-to-end supervised learning workflow with business evaluation |
+| Analytics Engineer / MLOps Analyst | Reusable pipeline, API, Docker, CI, deployment templates |
 
 ---
 
